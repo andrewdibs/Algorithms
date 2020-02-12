@@ -73,6 +73,7 @@ import java.util.Scanner;
  * The constructor should initialize the data members to reasonable
  * values.
  */
+import java.util.Scanner;
 class Location {
   final int RIGHT = 0;
   final int DOWN  = 1;
@@ -91,7 +92,7 @@ class Location {
     nextDirection = DONE;
   }
 
-  void start(Location loc) {  // const
+  void start() {  // const
     // - Starts the next Direction phase for the new loc
     nextDirection = RIGHT;
   }

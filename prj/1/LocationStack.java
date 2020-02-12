@@ -27,30 +27,53 @@
 class LocationStack {
   private LocationStack(LocationStack s) { assert(false); }
   private LocationStackNode top;
-
+  private int depth = 0;
   LocationStack() {
-    // -
+    // - Constuctor for Location stack
+    depth = 0;
+    top = null;
   }
 
   void push(Location loc) {
-    // -
+    // - creates a new LocationStack node and makes it top
+    LocationStackNode newLoc = new LocationStackNode(loc, top); 
+    newLoc.setNextNode(top);
+    top = newLoc;
+    depth++;
+    
   }
   void pop() {
-    // -
+    // - pops the top and makes next top
+    if (depth > 0){ 
+      LocationStackNode temp = top.getLocation();
+      top = top.getNextNode();
+      depth--;
+      temp.getLocation().streamOut();
+    }
   }
   Location getTop() {
-    // -
+    // - peeks top
+    return top.getLocation();
   }
 
   boolean isEmpty() {
-    // -
+    // -  Retruns true if depth of stack is 0
+    return depth == 0;
   }
   boolean isOn(Location loc) {
-    // -
+    // - traverses the stack and checks if location isEqual
+    LocationStackNode curLoc = top; 
+    while(curLoc != null){
+      if(loc.isEqual(curLoc.getLocation())) return true; 
+      curLoc = curLoc.getNextNode();
+    }
+    return false;
   }
 
   void streamOut(LocationStack s) {
     // -
+    
+    
   }
 }
 
@@ -83,11 +106,9 @@ class LocationStackNode {
     // -Constructor
     this.location = loc;
     this.nextnode = next;
-    
   }
-
   Location getLocation() {
-    // -
+    // - returns the location object for current node
     return this.location;
   }
   LocationStackNode getNextNode() {

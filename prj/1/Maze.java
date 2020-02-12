@@ -33,6 +33,7 @@
  * dynamically allocated memory).  If these methods are called, they
  * will intentionally crash the program by the call to assert(false).
  */
+import java.util.Scanner;
 class Maze {
   private Maze(Maze m) { assert(false); }
 
@@ -44,20 +45,46 @@ class Maze {
 
   Maze() {
     // -
+    startLocation = null;
+    endLocation = null;
+    validLocationCount = 0;
+    
   }
 
   Location getStartLocation() {
-    // -
+    // - returns location start
+    return startLocation;
   }
   boolean isValidLocation(Location loc) {
-    // -
+    // - checks each location in valid location array
+    for(Location valLoc : validLocations){
+      if(valLoc.isEqual(loc))return true;
+    }
+    return false;
+    
   }
   boolean isEndLocation(Location loc) {
-    // -
+    // - checks if it has reached end location 
+    return loc.isEqual(endLocation);
+  }
+  void streamOut(){
+    System.out.println(validLocationCount);
+    System.out.println(startLocation);
+    System.out.println(endLocation);
   }
 
   void streamIn(Scanner input) {
-    // -
-    startLocation 
+    // - creates the maze object from input
+    this.validLocationCount = input.nextInt();
+    this.validLocations = new Location[validLocationCount];
+    for(int i = 0;i<validLocationCount-1;i++){
+      this.validLocations[i]= new Location();
+      validLocations[i].streamIn(input);
+    }
+    this.startLocation= new Location();
+    startLocation.streamIn(input);
+    this.endLocation = new Location();
+    endLocation.streamIn(input);
+
   }
 }
