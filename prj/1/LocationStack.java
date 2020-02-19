@@ -60,21 +60,27 @@ class LocationStack {
 
   void streamOut(LocationStack s) {
     // - reverses the nodes 2x and prints the locations
-    Stack <Location> temp = new Stack<Location>();
+    LocationStackNode pointer = s.top;
+    LocationStackNode next = pointer.getNextNode();
+    LocationStackNode prev = null;
     
-    while(s.isEmpty()){
-      temp.push(top.getLocation());
-      s.pop();
+    int x = 0;
+    while(x<s.depth ){
+      pointer.setNextNode(prev);
+      next.setNextNode(pointer);
+      prev = pointer;
+      pointer = next;
+      x++;
     }
-    while(!temp.empty()){
-      Location curLoc = new Location();
-      curLoc = temp.peek();
-      curLoc.streamOut();
-      temp.pop();
+    while(next != null ){
+      System.out.println("2");
+      pointer.getLocation().streamOut();
+      pointer.setNextNode(prev);
+      next.setNextNode(pointer);
+      prev = pointer;
+      pointer = next;
     }
-
   }
-    
 }
 
 
