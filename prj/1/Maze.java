@@ -57,7 +57,8 @@ class Maze {
   }
   boolean isValidLocation(Location loc) {
     // - checks each location in valid location array
-    for(Location valLoc : validLocations){
+    for(int i =0; i <validLocationCount;i++){
+      Location valLoc = validLocations[i];
       if(valLoc.isEqual(loc))return true;
     }
     return false;
@@ -67,19 +68,15 @@ class Maze {
     // - checks if it has reached end location 
     return loc.isEqual(endLocation);
   }
-  void streamOut(){
-    System.out.println(validLocationCount);
-    System.out.println(startLocation);
-    System.out.println(endLocation);
-  }
 
   void streamIn(Scanner input) {
     // - creates the maze object from input
     this.validLocationCount = input.nextInt();
     this.validLocations = new Location[validLocationCount];
-    for(int i = 0;i<validLocationCount-1;i++){
-      this.validLocations[i]= new Location();
-      validLocations[i].streamIn(input);
+    for(int i = 0;i<validLocationCount;i++){
+      Location temp = new Location();
+      temp.streamIn(input);
+      validLocations[i] = temp;
     }
     this.startLocation= new Location();
     startLocation.streamIn(input);

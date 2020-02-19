@@ -23,7 +23,7 @@
  *
  * The data member top is a reference to the top node.
  */
-
+import java.util.Stack;
 class LocationStack {
   private LocationStack(LocationStack s) { assert(false); }
   private LocationStackNode top;
@@ -45,10 +45,8 @@ class LocationStack {
   void pop() {
     // - pops the top and makes next top
     if (depth > 0){ 
-      LocationStackNode temp = top.getLocation();
       top = top.getNextNode();
       depth--;
-      temp.getLocation().streamOut();
     }
   }
   Location getTop() {
@@ -69,12 +67,29 @@ class LocationStack {
     }
     return false;
   }
+  LocationStackNode getLastNode(){
+    if (top.getNextNode() != null) return this.getLastNode();
+
+    return top;
+  }
 
   void streamOut(LocationStack s) {
-    // -
+    // - reverses the nodes 2x and prints the locations
+    Stack <Location> temp = new Stack<Location>();
     
-    
+    while(s.isEmpty()){
+      temp.push(top.getLocation());
+      s.pop();
+    }
+    while(!temp.empty()){
+      Location curLoc = new Location();
+      curLoc = temp.peek();
+      curLoc.streamOut();
+      temp.pop();
+    }
+
   }
+    
 }
 
 /* Class declaration for a Node on a LocationStack. Each node contains
@@ -105,7 +120,7 @@ class LocationStackNode {
   LocationStackNode(Location loc, LocationStackNode next) {
     // -Constructor
     this.location = loc;
-    this.nextnode = next;
+    this.nextNode = next;
   }
   Location getLocation() {
     // - returns the location object for current node

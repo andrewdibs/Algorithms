@@ -1,4 +1,3 @@
-import java.util.Scanner;
 
 /* An object of the Location class represents a location, and also the
  * ability to find out all the possible "neighbors" of this location
@@ -89,7 +88,7 @@ class Location {
     // -This constructor initilizes the Row and Column for a location
     row = 0;
     col = 0;
-    nextDirection = DONE;
+    nextDirection = 0;
   }
 
   void start() {  // const
@@ -100,6 +99,8 @@ class Location {
   Location nextNeighbor() {  // const
     // -Returns a location object for next location 
     Location temp = new Location();
+    temp.row = this.row;
+    temp.col = this.col;
     if (nextDirection == RIGHT)
       temp.col++;
     else if (nextDirection == DOWN) 
