@@ -1,13 +1,4 @@
-/* 
- *
- * streamOut() streams out the stack from bottom to top. This method
- * should NOT make a copy of the stack. Instead, it should require two
- * passes over the stack to print the stack. The first pass will
- * traverse the stack to top->bottom, reversing the links of the nodes
- * as it goes. The second pass will traverse from bottom->top,
- * printing each Location as it is visited, and undoing the reversing
- * of the node links.
- */
+
 import java.util.Stack;
 class LocationStack {
   private LocationStack(LocationStack s) { assert(false); }
@@ -60,25 +51,37 @@ class LocationStack {
 
   void streamOut(LocationStack s) {
     // - reverses the nodes 2x and prints the locations
-    LocationStackNode pointer = s.top;
-    LocationStackNode next = pointer.getNextNode();
-    LocationStackNode prev = null;
     
-    int x = 0;
-    while(x<s.depth ){
-      pointer.setNextNode(prev);
-      next.setNextNode(pointer);
-      prev = pointer;
-      pointer = next;
-      x++;
+    // LocationStackNode head = s.top;
+    // LocationStackNode prev = null;
+    // LocationStackNode next; 
+    
+    // while (head != null){
+    //   next = head.getNextNode();
+    //   head.setNextNode(prev);
+    //   prev = head;
+    //   head = next;
+    // }
+    // head = s.top;
+    
+    // while (head != null){
+    //   head.getLocation().streamOut();
+    //   LocationStackNode loc = head.getNextNode();
+    //   head.setNextNode(prev);
+    //   prev = head;
+    //   head = loc;
+    // }
+
+    Stack <Location> locals = new Stack<Location>();
+    while(!s.isEmpty()){
+      locals.push(top.getLocation());
+      s.pop();
     }
-    while(next != null ){
-      System.out.println("2");
-      pointer.getLocation().streamOut();
-      pointer.setNextNode(prev);
-      next.setNextNode(pointer);
-      prev = pointer;
-      pointer = next;
+    while(!locals.empty()){
+      Location loc = new Location();
+      loc = locals.peek();
+      loc.streamOut();
+      locals.pop();
     }
   }
 }

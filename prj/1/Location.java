@@ -30,12 +30,16 @@ class Location {
     temp.col = this.col;
     if (nextDirection == RIGHT)
       temp.col++;
+    
     else if (nextDirection == DOWN) 
       temp.row++;
+    
     else if (nextDirection == LEFT)
       temp.col--;
+      
     else if (nextDirection == UP)
       temp.row--;
+   
     
     nextDirection++;
     return temp; 
@@ -52,12 +56,13 @@ class Location {
 
   void streamOut() {
     // -Prints the row and column for this location
-    System.out.print(row + " " + col);
+    System.out.println(row + " " + col);
   }
 
   void streamIn(Scanner input) {
     // -Reads from plain text input to initialize loc
     row = input.nextInt();
     col = input.nextInt();
+
   }
 }

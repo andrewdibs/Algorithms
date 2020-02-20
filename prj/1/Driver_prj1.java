@@ -1,3 +1,10 @@
+/*
+*Author: Andrew DiBella
+*MAZE depth first search algorithm
+*2/19/20
+*
+*/
+
 import java.util.Scanner;
 class Driver_prj1{
   public static void main(String [] args){
@@ -16,35 +23,28 @@ class Driver_prj1{
     while (true){
       //  Finds the next neighor 
       Location next = ls.getTop().nextNeighbor();
-      
-      System.out.print("Next: ");
-      next.streamOut();
-      System.out.print(" Top: ");
-      ls.getTop().streamOut();
-      System.out.println();
-      
-      
-        //  if location checked all possible directions - pop
-      if (ls.getTop().nextDirection == 4){
-        ls.pop();
-        System.out.println("pop");
-        // if stack is empty after pop - break - no solution
-        if (ls.isEmpty()) break;
-      }
-      //  if next neighbor is a valid location - push to top
-      else if(m.isValidLocation(next) && !ls.isOn(next)){
-        ls.push(next);
-        System.out.println("push");
-      }
+       
       //  checks if reached end location 
-      if (m.isEndLocation(ls.getTop())){
+      if (m.isEndLocation(ls.getTop()))
         break;
+
+      //  if next neighbor is a valid location - push to top
+      if (m.isValidLocation(next) && !ls.isOn(next)){
+        ls.push(next);
       }
-      // else{
-      //   ls.getTop().nextDirection++;
-      // }
+      
+      //  if location checked all possible directions - pop
+      else if (ls.getTop().isDone()){
+        while(ls.getTop().isDone()){
+          ls.pop();
+          // if stack is empty after pop - break - no solution
+          if (ls.isEmpty()) break;
+        }
+        if(ls.isEmpty()) break;
+      } 
+     
     }
-      // No solution found
+    // No solution found
     if (ls.isEmpty()){
       System.out.println("No solution found");
     }
