@@ -52,37 +52,37 @@ class LocationStack {
   void streamOut(LocationStack s) {
     // - reverses the nodes 2x and prints the locations
     
-    // LocationStackNode head = s.top;
-    // LocationStackNode prev = null;
-    // LocationStackNode next; 
+    LocationStackNode head = s.top;
+    LocationStackNode prev = null;
+    LocationStackNode next; 
     
-    // while (head != null){
-    //   next = head.getNextNode();
-    //   head.setNextNode(prev);
-    //   prev = head;
-    //   head = next;
-    // }
-    // head = s.top;
+    while (head != null){
+      next = head.getNextNode();
+      head.setNextNode(prev);
+      prev = head;
+      head = next;
+    }
+    head = s.top;
     
-    // while (head != null){
-    //   head.getLocation().streamOut();
-    //   LocationStackNode loc = head.getNextNode();
-    //   head.setNextNode(prev);
-    //   prev = head;
-    //   head = loc;
-    // }
+    while (head != null){
+      head.getLocation().streamOut();
+      LocationStackNode loc = head.getNextNode();
+      head.setNextNode(prev);
+      prev = head;
+      head = loc;
+    }
 
-    Stack <Location> locals = new Stack<Location>();
-    while(!s.isEmpty()){
-      locals.push(top.getLocation());
-      s.pop();
-    }
-    while(!locals.empty()){
-      Location loc = new Location();
-      loc = locals.peek();
-      loc.streamOut();
-      locals.pop();
-    }
+    // Stack <Location> locals = new Stack<Location>();
+    // while(!s.isEmpty()){
+    //   locals.push(top.getLocation());
+    //   s.pop();
+    // }
+    // while(!locals.empty()){
+    //   Location loc = new Location();
+    //   loc = locals.peek();
+    //   loc.streamOut();
+    //   locals.pop();
+    // }
   }
 }
 
