@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /* Changes from project 1:
  *
  * The Location class now represents a word, instead of a row/column position.
@@ -63,7 +65,7 @@
  *    nextNeighbor().
  */
 
-class Location {
+class Location implements Comparable<Location>{
   final int CHANGE_LETTER = 0;
   final int INSERT_LETTER = 1;
   final int DELETE_LETTER = 2;
@@ -75,34 +77,92 @@ class Location {
   char nextLetter;
 
   Location() {
-    // -
+    // - blank location 
+    word = "";
+    iterationMode = CHANGE_LETTER;
+    indexToChange = 0;
+    nextLetter = 'a';
+
   }
 
   void start() {  
-    // -
+    // - start iteration process
+    iterationMode = CHANGE_LETTER;
+    indexToChange = 0;
+    nextLetter = 'a';
   }
 
   Location nextNeighbor() {  
     // -
+    StringBuilder sb = new StringBuilder();
+    sb.append(word);
+    
+    if (iterationMode == CHANGE_LETTER){
+      sb.setCharAt(indexToChange, nextLetter);
+      indexToChange++;
+      nextLetter++;
+      if(nextLetter == 'A'){
+        nextLetter = 'a';
+        indexToChange++;
+        if (indexToChange>sb.length()-1){
+          indexToChange = 0;
+          iterationMode++;
+        }
+      }
+    }
+    else if (iterationMode == INSERT_LETTER){
+      sb.insert(indexToChange, nextLetter);
+      if(nextLetter == 'A'){
+        nextLetter = 'a';
+        indexToChange++;
+        if (indexToChange>sb.length()){
+          indexToChange = 0;
+          iterationMode++;
+        }
+      }
+    } 
+    else if (iterationMode == DELETE_LETTER){
+      sb.deleteCharAt(indexToChange);
+      indexToChange++;
+      if (indexToChange>sb.length()){
+        iterationMode++;
+      }
+    }
+    String next = sb.toString();
+    Location neighbor = new Location();
+    neighbor.word = next;
+
+    return neighbor; 
   }
 
   boolean isDone() {  
-    // -
+    // - checks if done with iteration
+    return iterationMode == DONE;
   }
 
   boolean isEqual(Location loc) {  
-    // -
+    // - checks if the lcoation word is equal 
+    return loc.word.equals(this.word);
   }
 
   void streamOut() {
-    // -
+    // -  print out the location word 
+    System.out.println(word);
   }
 
   void streamIn(Scanner input) {
-    // -
+    // -  input location word 
+    this.word = input.nextLine();
+
   }
 
   boolean isLess(Location loc) {
     // -
+    int c = word.compareTo(loc.word);
+    return c<0;
+  }
+
+  public int compareTo(Location loc){
+    return word.compareTo(loc.word);
   }
 }
