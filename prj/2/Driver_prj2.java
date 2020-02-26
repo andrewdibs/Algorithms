@@ -16,7 +16,7 @@ class Driver_prj2{
 
     // initialize start 
     qu.add(start);
-    ml.get(start).equals(start);
+    ml.put(start,start);
     
 
     // checks if reached end location 
@@ -27,15 +27,14 @@ class Driver_prj2{
 
         Location next = front.nextNeighbor();
         // if next is valid location add to qu
-        if (m.isValidLocation(next)){
-          qu.add(next);
-          //if next is not already a key add shortest path to map
-          if(!ml.containsKey(next))
-            ml.get(next).equals(front);
-
+        if(!ml.containsKey(next)){
+          if(m.isValidLocation(next)){
+            qu.add(next);
+            ml.put(next,front);
+          }
         }
         // if next is done checking neighbors break and restart loop
-        if (next.isDone()){
+        if (front.isDone()|| m.isEndLocation(front)){
           qu.remove();
           break;
         }
@@ -44,12 +43,14 @@ class Driver_prj2{
       if (qu.getLength() == 0) break;
     
     }
-    if (m.isEndLocation(qu.getFront())){
-      System.out.println("Solution found:");
+    if (qu.getLength() == 0){
+      System.out.println("No solution found");
     }
     else{
-      System.out.println("No solution");
-    }
+      System.out.println("Solution found:");
+      
 
+    }
+    
   }
 }
