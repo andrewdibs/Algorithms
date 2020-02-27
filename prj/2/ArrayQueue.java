@@ -11,7 +11,7 @@ class ArrayQueue {
       temp[i] = data[(front + i) % length];
     }
     front = 0;
-    data = temp.clone();
+    data = temp;
     
   }
 
@@ -19,7 +19,7 @@ class ArrayQueue {
     // - Creates a blank queue
     front = 0;
     length = 0;
-    capacity = 500;
+    capacity = 10;
     data = new Location[capacity];
   }
 
@@ -41,7 +41,6 @@ class ArrayQueue {
     if (length == capacity){
       doubleCapacity(); 
     }
-    System.out.println(front);
   }
 
   void remove() {
