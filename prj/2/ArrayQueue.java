@@ -1,5 +1,4 @@
 
-
 class ArrayQueue {
   private Location[] data;
   private int length, capacity, front;
@@ -11,36 +10,38 @@ class ArrayQueue {
     for (int i=0; i<length; i++){
       temp[i] = data[(front + i) % length];
     }
-
     front = 0;
-    this.data = temp;
+    data = temp.clone();
+    
   }
 
   ArrayQueue() {
     // - Creates a blank queue
     front = 0;
     length = 0;
-    capacity = 30;
+    capacity = 500;
     data = new Location[capacity];
   }
+
   ArrayQueue(ArrayQueue q) {
     // - creates new arrray queue from contents q
     this.length = q.length;
     this.capacity = q.capacity;
     this.front = q.front;
-    for (int i= 0;i< capacity;i++){
-      this.data[i]= q.data[i];
+    for (int i = 0;i < capacity;i++){
+      this.data[i] = q.data[i];
     }
   }
 
   void add(Location loc) {
     // - finds the correct index to add loc to circular array
-    if (length == capacity){
-      doubleCapacity();
-    }
     int index = (length + front) % capacity;
     data[index] = loc;
     length++;
+    if (length == capacity){
+      doubleCapacity(); 
+    }
+    System.out.println(front);
   }
 
   void remove() {
@@ -64,7 +65,5 @@ class ArrayQueue {
   ArrayQueue copy = new ArrayQueue(q);
   return copy;
   }
-
-  
 }
 
