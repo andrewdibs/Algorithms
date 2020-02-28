@@ -37,9 +37,12 @@ class Driver_prj2{
     ml.put(start,start);
     
     // checks if reached end location 
-    while (qu.getLength()>0 && !m.isEndLocation(qu.getFront())){
+    while (qu.getLength() > 0 && !m.isEndLocation(qu.getFront())){
+      
       Location front = new Location();
       front = qu.getFront();
+      front.start();
+      qu.remove();
       while(!front.isDone()){
         Location next = front.nextNeighbor();
         // if next is valid location add to qu
@@ -53,7 +56,6 @@ class Driver_prj2{
           } 
         }
       }
-      qu.remove();
     }
     if (qu.getLength() == 0){
       System.out.println("No solution found");
@@ -74,11 +76,8 @@ class Driver_prj2{
       start.streamOut();
       while(!s.isEmpty()){
         s.pop().streamOut();
-        
       }
       endLocation.streamOut();
-
     }
-    
   }
 }

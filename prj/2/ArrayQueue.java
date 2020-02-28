@@ -5,21 +5,20 @@ class ArrayQueue {
   
   private void doubleCapacity() {
     // - doubles the capacity of queue 
-    capacity = capacity * 2;
-    Location[] temp = new Location[capacity];
+    Location[] temp = new Location[capacity*2];
     for (int i=0; i<length; i++){
       temp[i] = data[(front + i) % length];
     }
-    front = 0;
     data = temp;
-    
+    front = 0;
+    capacity = capacity * 2;
   }
 
   ArrayQueue() {
     // - Creates a blank queue
     front = 0;
     length = 0;
-    capacity = 10;
+    capacity = 1;
     data = new Location[capacity];
   }
 
@@ -35,17 +34,18 @@ class ArrayQueue {
 
   void add(Location loc) {
     // - finds the correct index to add loc to circular array
-    int index = (length + front) % capacity;
-    data[index] = loc;
-    length++;
+    
     if (length == capacity){
       doubleCapacity(); 
     }
+    int index = (length + front) % capacity;
+    data[index] = loc;
+    length++;
   }
 
   void remove() {
     // - removes the front item in the queue 
-    front++;
+    front= (front +1)% capacity ;
     length--;
   }
 
