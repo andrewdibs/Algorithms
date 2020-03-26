@@ -1,17 +1,7 @@
 import java.util.Scanner;
 
 /* A BSTNode represents a node in a binary search tree. Each BSTNode object
- * stores a single item (called "data"). Each object also has left and right
- * pointers, which point to the left and right subtrees.
- *
- * The BST can be seen as superclass of the BSTNode class, so that the BST 
- * may make changes to the internals of a BSTNode.
- *
- * The constructor is provided for you; read it carefully.
- *
- * The getLeft(), getRight(), and getData() methods are useful for the
- * EncryptionTree class (or any class that wants to have read-only access to the
- * nodes of a BST).
+ * 
  *
  * The printPreorder() traverses this node and its children recursively in
  * pre-order and prints each node it visits to standard output (i.e.
@@ -20,21 +10,7 @@ import java.util.Scanner;
  * level of the tree it adds two spaces of indentation to show the structure 
  * of the tree. The run-time of printPreorder() is O(n). Can you figure out 
  * why?  Could it be made more efficient?
- *
- * The minNode() and maxNode() methods are useful in verifySearchOrder(). They
- * should find the leftmost and rightmost node at or below the node they are
- * called on. These can be implemented recursively or iteratively.
- *
- * The function verifySearchOrder() can be used to do verifications of the
- * binary search tree's order. It can and should be used for testing purposes.
- * If you implement minNode() and maxNode() efficiently, the run-time of
- * verifySearchOrder() is O(n^2) for this (potentially unbalanced) tree. Can you
- * figure out why?  Could it be made more efficient using different techniques?
- *
- * No one may call the copy constructor on a BSTNode, it is hereby forbidden,
- * so it is protected and will crash the program if called.
  */
-
 class BSTNode {
   protected  BSTNode(BSTNode t) { assert(false); }
 
@@ -51,18 +27,38 @@ class BSTNode {
   public String getData()    { return data;  }
   
   public void printPreorder() {
-    String indent = "";
-    //-
+    String indent = "  ";
+    //-  Prints the preorder of the tree 
+    if (this.data == null) 
+      return; 
+    // first print data of node
+    System.out.print(this.data + indent); 
+    //then recur on left sutree 
+    left.printPreorder();  
+    // now recur on right subtree 
+    right.printPreorder(); 
   }
    
   public BSTNode minNode() { 
-    //-
+    //-  Locates the most left node
+    BSTNode cur = this;
+    while (cur != null){
+      cur = cur.left;
+    }
+    return cur;
   }
   public BSTNode maxNode() { 
-    //- 
+    //-  locates the most right node 
+    BSTNode cur = this;
+    while (cur != null){
+      cur = cur.right;
+    }
+    return cur;
+  }
+  public BSTNode duplicate(){
+    return this; 
   }
 
-  /* professor's implementation of verifySearchOrder(); don't change it */
   public void verifySearchOrder() {
     if (left != null) {
       assert(left.maxNode().data.compareTo(data) == -1);
@@ -105,11 +101,39 @@ class BST {
   }
 
   public void insert(String item) { 
-    //- 
+    //-
+
+    if (root == null) root = new BSTNode(item,null,null);
+    else{
+      BSTNode cur = root;
+
+      while (cur != null){
+        if (cur.data.compareTo(item) > 0 ){
+          if (cur.right == null){
+            cur.right = new BSTNode(item,null,null);
+            break;
+          }else{
+            cur = cur.left;
+          }
+        }
+        else if (cur.data.compareTo(item) < 0){
+          if (cur.right == null){
+            cur.right = new BSTNode(item,null,null);
+            break;
+          }else{
+            cur = cur.right;
+          }
+        }
+      }
+    }
   }
   public void remove(String item) { 
     //- 
+    
+
+
   }
+ 
 
   public void printPreorder() { if (root != null) root.printPreorder(); }
   public void verifySearchOrder() { if (root != null) root.verifySearchOrder(); }
@@ -143,6 +167,11 @@ class EncryptionTree extends BST {
   }
   public String decrypt(String path) { 
     //-
+    String message = "";
+    for (int i = 0; i< path.length();i++){
+      
+      if ()
+    }
   }
 }
 
