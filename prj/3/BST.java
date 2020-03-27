@@ -101,16 +101,16 @@ class BST {
   }
 
   public void insert(String item) { 
-    //-
+    //- insertion of new node not already in tree 
 
     if (root == null) root = new BSTNode(item,null,null);
     else{
       BSTNode cur = root;
 
-      while (cur != null){
+      while (true){
         if (cur.data.compareTo(item) > 0 ){
-          if (cur.right == null){
-            cur.right = new BSTNode(item,null,null);
+          if (cur.left == null){
+            cur.left = new BSTNode(item,null,null);
             break;
           }else{
             cur = cur.left;
@@ -128,8 +128,76 @@ class BST {
     }
   }
   public void remove(String item) { 
-    //- 
-    
+    //- find node, determine case, remove node
+    if (root != null){
+      BSTNode parent = null;
+      BSTNode cur = root;
+      // locate the node to remove
+      while(cur != null){
+        // left is less than item
+        if (cur.data.compareTo(item) > 0) {
+          parent = cur;
+          cur = parent.left;
+          if (cur.data.equals(item)){
+            break;
+          }
+        }
+        // to the right
+        else if (cur.data.compareTo(item) < 0){
+          parent = cur;
+          cur = parent.right;
+          if (cur.data.equals(item)){
+            break;
+          }
+        }
+      }
+      // if to remove is not in tree do nothing
+      if (cur == null) return;
+
+      // cur node is node to remove: store grandchildren of cur parent
+      BSTNode leftChild = cur.left;
+      BSTNode rightChild = cur.right; 
+      // removing a leaf node 
+      if (leftChild == null && rightChild == null){
+        if (parent.data.compareTo(cur.data) >= 0){
+          parent.left = null;
+        }else{
+          parent.right = null;
+        }
+        cur = null; 
+      }
+      // removing a node with one child 
+      else if (leftChild == null && rightChild != null || 
+                leftChild != null && rightChild == null ){
+        
+        // make left grandchild parents left child
+        if (rightChild == null){
+          parent.left = leftChild;
+        }
+        // make right grandchild parents right child
+        else{
+          parent.right = rightChild;
+        }
+        cur = null;
+        
+      }
+      // removing a node with two children
+      else{
+        BSTNode min = rightChild.minNode();
+
+        min.left = cur.left;
+        min.right = cur.right;
+        if (cur == root) root = min;
+        
+        cur = null;
+
+      }
+
+
+      
+
+
+    }
 
 
   }
@@ -163,15 +231,45 @@ class EncryptionTree extends BST {
   public EncryptionTree() {}
   
   public String encrypt(String item) {
-    //-
+    //- encrypts using the location in the tree from the root
+    if (root == null) return "";
+    BSTNode cur = root;
+    String path = "r";
+    // while the current node isnt the item 
+    while(!(cur.data.compareTo(item) == 0)){
+      // to the left 
+      if (cur.data.compareTo(item) > 0){
+        path = path + "0";
+        cur = cur.left;
+      }
+      // to the right
+      else if (cur.data.compareTo(item) < 0){
+        path = path + "1";
+        cur = cur.right;
+      }
+    }
+
+    return path;
+
   }
   public String decrypt(String path) { 
     //-
-    String message = "";
+    if (root == null) return "";
+    BSTNode cur = root;
     for (int i = 0; i< path.length();i++){
-      
-      if ()
+      char next = path.charAt(i);
+      if (next == '0'){
+        cur = cur.left;
+      }
+      else if (next == '1'){
+        cur = cur.right;
+      }
     }
-  }
+    // return final node data in path
+    if (!(cur == null))
+      return cur.data;
+    //else return empty string 
+    return "";
+  } 
 }
 
