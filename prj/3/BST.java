@@ -16,18 +16,58 @@ class BSTNode {
   public String getData()    { return data;  }
   
   public void printPreorder() {
-    String indent = "  ";
+    String indent = "";
     //-  Prints the preorder of the tree 
-    if (this.data == null) 
+    if (data == null) 
       return; 
-    // first print data of node
-    System.out.print(this.data + indent); 
-    //then recur on left sutree 
-    left.printPreorder();  
-    // now recur on right subtree 
-    right.printPreorder(); 
+    //print
+    System.out.println(indent + data);
+    
+    // left
+    if (left == null){
+      System.out.println("  NULL");
+    }
+    else{
+      left.printPreorder("  ");
+    }
+    // right
+    if (right == null){
+      System.out.println("  NULL");
+    }
+    else{
+      right.printPreorder("  ");
+    }
   }
-   
+  
+  // Method Overload
+  public void printPreorder(String indent){
+    //- overloads printPreorder with string param
+    
+    //-  Prints the preorder of the tree 
+    if (data == null) {
+      System.out.println(indent + "  NULL");
+    }
+    else{
+      System.out.println(indent + data);
+    }
+    
+    // left
+    if (left == null){
+      System.out.println(indent + "  NULL");
+    }
+    else{
+      left.printPreorder(indent + "  ");
+    }
+    // right
+    if (right == null){
+      System.out.println(indent + "  NULL");
+    }
+    else{
+      right.printPreorder(indent + "  ");
+    }
+
+  }
+
   public BSTNode minNode() { 
     //-  Locates the most left node
     BSTNode cur = this;
@@ -36,6 +76,7 @@ class BSTNode {
     }
     return cur;
   }
+
   public BSTNode maxNode() { 
     //-  locates the most right node 
     BSTNode cur = this;
@@ -207,7 +248,7 @@ class EncryptionTree extends BST {
     BSTNode cur = root;
     String path = "r";
     // while the current node isnt the item 
-    while(!(cur.data.compareTo(item) == 0)){
+    while(cur != null && !(cur.data.compareTo(item) == 0)){
       // to the left 
       if (cur.data.compareTo(item) > 0){
         path = path + "0";
@@ -231,13 +272,15 @@ class EncryptionTree extends BST {
       char next = path.charAt(i);
       if (next == '0'){
         cur = cur.left;
+        if (cur == null) break;
       }
       else if (next == '1'){
         cur = cur.right;
+        if (cur == null) break;
       }
     }
     // return final node data in path
-    if (!(cur == null))
+    if (cur != null)
       return cur.data;
     //else return empty string 
     return "";
