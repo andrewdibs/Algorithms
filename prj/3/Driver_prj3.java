@@ -10,6 +10,8 @@ class Driver_prj3{
       char command = line.charAt(0);
 
       if (command == 'i'){
+        System.out.println("insert");
+
         tree.insert(line.substring(2));
       }
       else if(command == 'r'){
@@ -22,7 +24,8 @@ class Driver_prj3{
         tree.decrypt(line.substring(3, line.length()-1));
       }
       else if(command == 'p'){
-        tree.printPreorder();
+        System.out.println("print");
+        //tree.printPreorder();
       }
       else if(command == 'q'){
         System.exit(0);
