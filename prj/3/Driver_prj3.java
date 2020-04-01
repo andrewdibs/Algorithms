@@ -16,10 +16,18 @@ class Driver_prj3{
         tree.remove(line.substring(2));
       }
       else if(command == 'e'){
-        System.out.println(tree.encrypt(line.substring(3, line.length()-1)));
+        String[] encrypted = line.split("'");
+        String[] paths = encrypted[1].split(" ");
+        for (String path: paths)
+          System.out.print(tree.encrypt(path)+ " ");
+        System.out.println();
       }
       else if(command == 'd'){
-        System.out.println(tree.decrypt(line.substring(3, line.length()-1)));
+        String[] decrypted = line.split("'");
+        String[] paths = decrypted[1].split(" ");
+        for (String path: paths)
+          System.out.print(tree.decrypt(path) + " ");
+        System.out.println();
       }
       else if(command == 'p'){
         tree.printPreorder();

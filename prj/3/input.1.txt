@@ -1,6 +1,6 @@
-p
 i four
 i score
+r four
 i and
 i seven
 i years

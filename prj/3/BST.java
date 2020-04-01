@@ -141,95 +141,102 @@ class BST {
   }
   public void remove(String item) { 
     //- find node, determine case, remove node
-    if (root != null){
-      BSTNode parent = null;
-      BSTNode cur = root;
-      // locate the node to remove
-      while(cur != null){
-        // left is less than item
-        if (cur.data.compareTo(item) > 0) {
-          parent = cur;
-          cur = parent.left;
-          if (cur == null) break;
-          if (cur.data.equals(item)){
-            break;
-          }
-        }
-        // to the right
-        else if (cur.data.compareTo(item) < 0){
-          parent = cur;
-          cur = parent.right;
-          if (cur == null) break;
-          if (cur.data.compareTo(item) == 0){
-            break;
-          }
-        }
-      }
-      // if to remove is not in tree do nothing
-      if (cur == null) return;
-
-      // cur node is node to remove: store grandchildren of cur parent
-      BSTNode leftChild = cur.left;
-      BSTNode rightChild = cur.right; 
-      // removing a leaf node 
-      if (leftChild == null && rightChild == null){
-        if (cur == root) root = null;
-        else{
-          if (parent.data.compareTo(cur.data) >= 0){
-            parent.left = null;
-          }else{
-            parent.right = null;
-          }
-          cur = null; 
-        }
-      }
-      // removing a node with one child 
-      else if (leftChild == null && rightChild != null || 
-                leftChild != null && rightChild == null ){
-        
-        // make left grandchild parents left child
-        if (rightChild == null){
-          if(cur == root) root = cur.left;
-          else parent.left = leftChild;
-        }
-        // make right grandchild parents right child
-        else{
-          if(cur == root) root = cur.right;
-          else parent.right = rightChild;
-        }
-        cur = null;
+    if (root == null) return;
+    
+    BSTNode parent = null;
+    BSTNode cur = root;
+    // locate the node to remove
+    while(cur != null && !(cur.data.compareTo(item) == 0)){
+      // left is less than item
+      
+      if (cur.data.compareTo(item) > 0) {
+        parent = cur;
+        cur = cur.left;
         
       }
-      // removing a node with two children
-      else{
-        // need to keep track of min parent as well
-        // BSTNode min = rightChild.minNode();
+      // to the right
+      else if (cur.data.compareTo(item) < 0){
+        parent = cur;
+        cur = cur.right;
+        
+      }
+      
+    }
+    // if to remove is not in tree do nothing
+    if (cur == null) return;
+    // removing a leaf node 
+    if (cur.left == null && cur.right == null){
+      if (parent == null) {root = null;}
+      else if (parent.left == cur){
+          parent.left = null;
+        }else{
+          parent.right = null;
+        }
+        cur = null; 
+    }
+    
+    // removing a node with one child 
+    else if ((cur.left == null && cur.right != null) || 
+              (cur.left != null && cur.right == null )){
+              
+      BSTNode grandChild = null;
+      // make left grandchild parents left child
+      if (cur.left != null){
+        grandChild = cur.left;
+        cur.left = null;
+      }else{
+        grandChild = cur.right;
+        cur.right = null;
+      }
+      if (cur == root){
+        root = grandChild;
+      }
+      else if (parent.left == cur){
+        parent.left = grandChild;
+      }else{
+        parent.right = grandChild;
+      }
+      cur = null;
+    }
+    // removing a node with two children
+    else{
+      // need to keep track of min parent as well
+      // BSTNode min = rightChild.minNode();
 
-        BSTNode min = cur.right;
-        BSTNode minParent = cur;
+      BSTNode min = cur.right;
+      BSTNode minParent = cur;
+      
+      if (min.left != null){
         while(min.left != null){
           minParent = min;
           min = min.left;
         }
         // relocate the min right node 
         minParent.left = min.right;
-        
-        // change pointers of the leftmost node
-        min.left = cur.left;
         min.right = cur.right;
-
-        // if the node to remove is the root
-        if (cur == root){ 
-          root = min;
-        }else{
-          // change pointers of the parent node 
-          if (parent.left == cur) parent.right = min;
-          else if (parent.right == cur) parent.right = min;
-        }
-        cur = null;
       }
+      // change pointers of the leftmost node
+      min.left = cur.left;
+
+      // if the node to remove is the root
+      if (cur == root){ 
+        root = min;
+      }else{
+        // change pointers of the parent node 
+        if (parent.left == cur) {
+          parent.left = min;
+        }
+        else{
+          parent.right = min;
+
+        }
+      }
+      cur.left = null;
+      cur.right = null;
+      cur = null;
     }
   }
+  
  
 
   public void printPreorder() { if (root != null) root.printPreorder(); }
@@ -253,11 +260,13 @@ class EncryptionTree extends BST {
       if (cur.data.compareTo(item) > 0){
         path = path + "0";
         cur = cur.left;
+        if (cur == null) return "";
       }
       // to the right
       else if (cur.data.compareTo(item) < 0){
         path = path + "1";
         cur = cur.right;
+        if (cur == null) return "";
       }
     }
 
