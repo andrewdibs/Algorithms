@@ -71,7 +71,7 @@ class BSTNode {
   public BSTNode minNode() { 
     //-  Locates the most left node
     BSTNode cur = this;
-    while (cur != null){
+    while (cur.left != null){
       cur = cur.left;
     }
     return cur;
@@ -80,7 +80,7 @@ class BSTNode {
   public BSTNode maxNode() { 
     //-  locates the most right node 
     BSTNode cur = this;
-    while (cur != null){
+    while (cur.right != null){
       cur = cur.right;
     }
     return cur;
@@ -142,28 +142,34 @@ class BST {
   public void remove(String item) { 
     //- find node, determine case, remove node
     if (root == null) return;
-    
+
     BSTNode parent = null;
-    BSTNode cur = root;
+    BSTNode cur = this.root;
+    boolean found = false;
     // locate the node to remove
-    while(cur != null && !(cur.data.compareTo(item) == 0)){
-      // left is less than item
+    while(cur != null && !found){
       
+
+      // left is less than item
       if (cur.data.compareTo(item) > 0) {
         parent = cur;
         cur = cur.left;
-        
       }
       // to the right
       else if (cur.data.compareTo(item) < 0){
         parent = cur;
         cur = cur.right;
         
+      }else if (cur.data.compareTo(item) == 0){
+         found = true;
       }
+      
       
     }
     // if to remove is not in tree do nothing
-    if (cur == null) return;
+    if (!found) return;
+
+
     // removing a leaf node 
     if (cur.left == null && cur.right == null){
       if (parent == null) {root = null;}
@@ -188,7 +194,8 @@ class BST {
         grandChild = cur.right;
         cur.right = null;
       }
-      if (cur == root){
+
+      if (parent == null){
         root = grandChild;
       }
       else if (parent.left == cur){

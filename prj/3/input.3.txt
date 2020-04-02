@@ -7,10 +7,7 @@ i a
 i c
 i b
 p
-r gstart
-r h
-r i
-r a
+r f
 p
 
 
