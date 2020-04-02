@@ -151,8 +151,7 @@ class AVLNode {
     }
 
   }
-
-  /* professor's implementation of verifySearchOrder(); don't change it */
+  
   public void verifySearchOrder() {
     if (left != null) {
       assert(left.maxNode().data.compareTo(data) == -1);
@@ -164,7 +163,6 @@ class AVLNode {
     }
   }
 
-  /* professor's implementation of verifyBalance(); don't change it */
   public void verifyBalance() {
     int heightDiff = Math.abs(getHeight(left) - getHeight(right));
     assert(heightDiff <= 1); 
@@ -281,10 +279,48 @@ class EncryptionTree extends AVLTree {
   EncryptionTree() {}
 
   public String encrypt(String item) {
-    //-
+    //- encrypts using the location in the tree from the root
+    if (root == null) return "";
+    AVLNode cur = root;
+    String path = "r";
+    // while the current node isnt the item 
+    while(cur != null && !(cur.data.compareTo(item) == 0)){
+      // to the left 
+      if (cur.data.compareTo(item) > 0){
+        path = path + "0";
+        cur = cur.left;
+        if (cur == null) return "";
+      }
+      // to the right
+      else if (cur.data.compareTo(item) < 0){
+        path = path + "1";
+        cur = cur.right;
+        if (cur == null) return "";
+      }
+    }
+
+    return path;
   }
 
-  public String decrypt(String path) {
+  public String decrypt(String path) { 
     //-
-  }
+    if (root == null) return "";
+    AVLNode cur = root;
+    for (int i = 0; i< path.length();i++){
+      char next = path.charAt(i);
+      if (next == '0'){
+        cur = cur.left;
+        if (cur == null) break;
+      }
+      else if (next == '1'){
+        cur = cur.right;
+        if (cur == null) break;
+      }
+    }
+    // return final node data in path
+    if (cur != null)
+      return cur.data;
+    //else return empty string 
+    return "";
+  } 
 }
