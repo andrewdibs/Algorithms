@@ -1,3 +1,17 @@
+/**
+   * file: Driver_prj3.java
+   * author: Andrew DiBella
+   * course: CMPT 435
+   * assignment: project 3
+   * due date: April 4, 2020
+   * version: 1.0
+   * 
+   * This file contains the main driver for 
+   * my implementation of the Binary Search 
+   * Encryption tree.
+   */
+
+
 
 import java.util.Scanner;
 class Driver_prj3{

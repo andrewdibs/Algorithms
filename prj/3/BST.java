@@ -1,5 +1,25 @@
+/**
+   * file: BST.java
+   * author: Andrew DiBella
+   * course: CMPT 435
+   * assignment: project 3
+   * due date: April 4, 2020
+   * version: 1.0
+   * 
+   * This file contains the declaration of the 
+   * BSTNode, BST, and Encryption Tree
+   */
 
 
+/**
+   * BSTNode
+   * 
+   * This class is the definition of 
+   * A BSTNode that can be inserted into a 
+   * Binary Search tree. This implentation has 
+   * a Sting data type and pointers to the nodes left 
+   * and right children
+   */
 class BSTNode {
   protected  BSTNode(BSTNode t) { assert(false); }
 
@@ -99,7 +119,14 @@ class BSTNode {
   }
 }
 
-
+/**
+   * BST
+   * 
+   * This class implements a binary search tree 
+   * with strings as its data member
+   * root is the BSTNode that has links to its 
+   * children 
+   */
 class BST {
   protected BST(BST t) { assert(false); }
   protected BST isEqual(BST t) { assert(false); return this; }
@@ -235,14 +262,18 @@ class BST {
     }
   }
   
- 
-
   public void printPreorder() { if (root != null) root.printPreorder(); }
   public void verifySearchOrder() { if (root != null) root.verifySearchOrder(); }
 
 }
 
-
+/**
+   * Encryption Tree
+   * 
+   * This class extends a Binary Search Tree (BST)
+   * Uses the data in the tree to encypt based on a 
+   * specific string or decrpyt based on a given path
+   */
  
 class EncryptionTree extends BST {
   public EncryptionTree() {}
