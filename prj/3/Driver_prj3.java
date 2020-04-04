@@ -36,5 +36,6 @@ class Driver_prj3{
         System.exit(0);
       }
     }
+    input.close();
   }
 }

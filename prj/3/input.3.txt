@@ -1,14 +1,7 @@
-i gstart
-i f 
-i e
-i i 
-i j
-i a 
-i c
-i b
+i zebra
+i zebra
 p
-r f
-p
+
 
 
 

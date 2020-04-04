@@ -1,4 +1,4 @@
-import java.util.Scanner;
+
 
 class BSTNode {
   protected  BSTNode(BSTNode t) { assert(false); }
@@ -85,9 +85,7 @@ class BSTNode {
     }
     return cur;
   }
-  public BSTNode duplicate(){
-    return this; 
-  }
+  
 
   public void verifySearchOrder() {
     if (left != null) {
@@ -135,41 +133,34 @@ class BST {
           }else{
             cur = cur.right;
           }
+        }else{
+          break;
         }
       }
     }
   }
   public void remove(String item) { 
+    BSTNode parent = null;
+    BSTNode cur = root;
+
     //- find node, determine case, remove node
     if (root == null) return;
 
-    BSTNode parent = null;
-    BSTNode cur = this.root;
-    boolean found = false;
-    // locate the node to remove
-    while(cur != null && !found){
-      
-
-      // left is less than item
-      if (cur.data.compareTo(item) > 0) {
+    while(cur != null){
+      if (cur.getData().compareTo(item) > 0){
         parent = cur;
         cur = cur.left;
       }
-      // to the right
-      else if (cur.data.compareTo(item) < 0){
+      else if (cur.getData().compareTo(item) < 0){
         parent = cur;
         cur = cur.right;
-        
-      }else if (cur.data.compareTo(item) == 0){
-         found = true;
+      }else{
+        break;
       }
-      
-      
     }
-    // if to remove is not in tree do nothing
-    if (!found) return;
 
-
+    if (cur == null) return;
+    
     // removing a leaf node 
     if (cur.left == null && cur.right == null){
       if (parent == null) {root = null;}
@@ -206,7 +197,7 @@ class BST {
       cur = null;
     }
     // removing a node with two children
-    else{
+    else {
       // need to keep track of min parent as well
       // BSTNode min = rightChild.minNode();
 
@@ -226,7 +217,7 @@ class BST {
       min.left = cur.left;
 
       // if the node to remove is the root
-      if (cur == root){ 
+      if (parent == null){ 
         root = min;
       }else{
         // change pointers of the parent node 
@@ -258,7 +249,7 @@ class EncryptionTree extends BST {
   
   public String encrypt(String item) {
     //- encrypts using the location in the tree from the root
-    if (root == null) return "";
+    if (root == null) return "?";
     BSTNode cur = root;
     String path = "r";
     // while the current node isnt the item 
@@ -267,13 +258,13 @@ class EncryptionTree extends BST {
       if (cur.data.compareTo(item) > 0){
         path = path + "0";
         cur = cur.left;
-        if (cur == null) return "";
+        if (cur == null) return "?";
       }
       // to the right
       else if (cur.data.compareTo(item) < 0){
         path = path + "1";
         cur = cur.right;
-        if (cur == null) return "";
+        if (cur == null) return "?";
       }
     }
 
@@ -282,7 +273,7 @@ class EncryptionTree extends BST {
   }
   public String decrypt(String path) { 
     //-
-    if (root == null) return "";
+    if (root == null) return "?";
     BSTNode cur = root;
     for (int i = 0; i< path.length();i++){
       char next = path.charAt(i);
@@ -299,7 +290,7 @@ class EncryptionTree extends BST {
     if (cur != null)
       return cur.data;
     //else return empty string 
-    return "";
+    return "?";
   } 
 }
 
