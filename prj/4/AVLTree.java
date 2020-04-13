@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 /**
@@ -243,7 +245,6 @@ class AVLTree {
 
     if (root == null) root = new AVLNode(item, null, null, 0);
     else{
-      // NOTE i may have to make this the formula S(h) = ...
       AVLNode[] path = new AVLNode[root.getHeight() + 2];
       int numOnPath = 0;
       AVLNode cur = root;
@@ -283,7 +284,7 @@ class AVLTree {
     //-
     if (root == null) return;
   
-    AVLNode[] path = new AVLNode[root.getHeight() + 2];
+    AVLNode[] path = new AVLNode[32];
     int numOnPath = 0;
     AVLNode parent = null;
     AVLNode cur = root;
@@ -307,11 +308,53 @@ class AVLTree {
 
     if (cur == null) return;
 
+    // leaf node
+    if (cur.left == null && cur.right == null){
+      if(parent == null){ root = null; }
+      else if(parent.left == cur){
+        parent.left = null;
+      }
+      else{
+        parent.right = null;
+      }
+      cur = null;
+    }
 
   }
 
   public void printLevelOrder() {
-    //-
+    //- prints each level of tree starting with root
+
+    if (root == null) {
+      System.out.println("NULL");
+      return;
+    }
+    Queue<AVLNode> q = new LinkedList<AVLNode>();
+    int numItems = 0;
+
+    q.add(root);
+    AVLNode front = q.peek();
+
+    while (front != null){
+      
+      if (front.left != null){
+        q.add(front.left);
+      }
+
+      if (front.right != null){
+        q.add(front.right);
+      }
+
+      if (numItems == 20){
+        System.out.println(q.remove().getData());
+        numItems = 0;  
+      }else{
+        System.out.print(q.remove().getData() + "  ");
+      }
+      front = q.peek();
+    }
+    System.out.println();
+
   }
 
   public void printPreorder() { 
