@@ -237,6 +237,43 @@ class AVLTree {
 
   protected void rebalancePathToRoot(AVLNode[] path, int numOnPath) {
     //-
+    AVLNode rotated = null;
+    numOnPath--;
+    while (numOnPath > -1){
+      System.out.println(path[numOnPath].data);
+      AVLNode cur = path[numOnPath];
+      cur.updateHeight();
+      int left = AVLNode.getHeight(cur.left);
+      int right = AVLNode.getHeight(cur.right);
+
+      if (left + 1 < right){
+        int rightLeft = AVLNode.getHeight(cur.right.left);
+        int rightRight = AVLNode.getHeight(cur.right.right);
+        if (rightLeft > rightRight){
+          rotated = cur.doubleRotateRightLeft();
+        }else{
+          rotated = cur.singleRotateLeft();
+        }
+      }else if (right + 1 < left){
+        int leftRight = AVLNode.getHeight(cur.left.right);
+        int leftLeft = AVLNode.getHeight(cur.left.left);
+        if (leftRight > leftLeft){
+          rotated = cur.doubleRotateLeftRight();
+        }else{
+          rotated = cur.singleRotateRight();
+        }
+      }
+
+      if (rotated != null){
+        if (numOnPath == 0){ root = rotated; }
+        else if(cur == path[numOnPath - 1].left){
+          path[numOnPath - 1].left = rotated;
+        }else{
+          path[numOnPath - 1].right = rotated;
+        } 
+      }
+      numOnPath--;
+    }
   }
 
   
@@ -245,7 +282,7 @@ class AVLTree {
 
     if (root == null) root = new AVLNode(item, null, null, 0);
     else{
-      AVLNode[] path = new AVLNode[root.getHeight() + 2];
+      AVLNode[] path = new AVLNode[32];
       int numOnPath = 0;
       AVLNode cur = root;
 
@@ -253,7 +290,7 @@ class AVLTree {
         path[numOnPath++] = cur;
         int compare = cur.data.compareTo(item);
         // right
-        if (compare > 0){
+        if (compare < 0){
           if (cur.right != null){
             cur = cur.right;
           }else{
@@ -263,7 +300,7 @@ class AVLTree {
             return;
           }
         } // left
-        else if (compare < 0){
+        else if (compare > 0){
           if (cur.left != null){
             cur = cur.left;
           }else{ 
@@ -336,15 +373,15 @@ class AVLTree {
     AVLNode front = q.peek();
 
     while (front != null){
-      
+      // left
       if (front.left != null){
         q.add(front.left);
       }
-
+      // right
       if (front.right != null){
         q.add(front.right);
       }
-
+      // new line
       if (numItems == 20){
         System.out.println(q.remove().getData());
         numItems = 0;  
@@ -385,7 +422,7 @@ class EncryptionTree extends AVLTree {
 
   public String encrypt(String item) {
     //- encrypts using the location in the tree from the root
-    if (root == null) return "";
+    if (root == null) return "?";
     AVLNode cur = root;
     String path = "r";
     // while the current node isnt the item 
@@ -394,13 +431,13 @@ class EncryptionTree extends AVLTree {
       if (cur.data.compareTo(item) > 0){
         path = path + "0";
         cur = cur.left;
-        if (cur == null) return "";
+        if (cur == null) return "?";
       }
       // to the right
       else if (cur.data.compareTo(item) < 0){
         path = path + "1";
         cur = cur.right;
-        if (cur == null) return "";
+        if (cur == null) return "?";
       }
     }
     return path;
@@ -408,7 +445,7 @@ class EncryptionTree extends AVLTree {
 
   public String decrypt(String path) { 
     //- decrypts the path of single node
-    if (root == null) return "";
+    if (root == null) return "?";
     AVLNode cur = root;
     for (int i = 0; i< path.length();i++){
       char next = path.charAt(i);
@@ -425,6 +462,6 @@ class EncryptionTree extends AVLTree {
     if (cur != null)
       return cur.data;
     //else return empty string 
-    return "";
+    return "?";
   } 
 }
