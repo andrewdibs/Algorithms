@@ -6,6 +6,7 @@ class Driver_prj4{
 
     while (input.hasNext()){
       String line = input.nextLine();
+      if (line.equals("")) continue;
       char command = line.charAt(0);
 
       if (command == 'i'){
@@ -38,5 +39,6 @@ class Driver_prj4{
         System.exit(0);
       }
     }
+    input.close();
   }
 }

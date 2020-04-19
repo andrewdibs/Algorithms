@@ -1,7 +1,5 @@
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
-
 /**
    * file: AVLTree.java
    * author: Andrew DiBella
@@ -40,9 +38,9 @@ class AVLNode {
     AVLNode r = this.right; 
     this.right = r.left;
     r.left = this;
-    r.updateHeight();
     this.updateHeight();
-
+    r.updateHeight();
+    
     return r;
   }
 
@@ -51,9 +49,9 @@ class AVLNode {
     AVLNode r = this.left;
     this.left = r.right;
     r.right = this;
-    r.updateHeight();
     this.updateHeight();
-
+    r.updateHeight();
+  
     return r;
   }
 
@@ -83,7 +81,7 @@ class AVLNode {
   public AVLNode getLeft()  { return left;  }
   public AVLNode getRight() { return right; }
   public String getData()   { return data;  }
-  public int getHeight()    { return height;}
+  
 
   public void printPreorder() {
     String indent = "";
@@ -91,7 +89,7 @@ class AVLNode {
     if (data == null) 
       return; 
     //print
-    System.out.println(indent + data);
+    System.out.println(indent + data + height);
     
     // left
     if (left == null){
@@ -118,7 +116,7 @@ class AVLNode {
       System.out.println(indent + "  NULL");
     }
     else{
-      System.out.println(indent + data);
+      System.out.println(indent + data + height);
     }
     
     // left
@@ -176,50 +174,6 @@ class AVLNode {
 }
 
 
-/* An AVLTree is a String-based class that represents an AVL-balanced binary 
- * search tree. It has one data member, "root", which is a reference to the 
- * root of the tree.
- *
- * Many of the methods in this class are virtually identical to methods in the
- * BST from the previous project (#3), including the constructor,
- * printPreorder(), verifySearchOrder(), and copy constructor.
- *
- * The insert() and remove() methods behave as in the plain BST, but both
- * methods should rebalance the tree as necessary. This is best done by creating
- * an array of references to AVLNode objects as the insert/remove methods search
- * for the place to do their work.  This array of references represents the path
- * taken to get from the root to the place where a change occurs in the tree.
- * Note that for remove(), this path might go deeper than the node removed, in
- * the case of removing a node with two children (think carefully about this).
- * After insert/remove finish updating the tree, they can pass the path to
- * rebalancePathToRoot() which actually does the rebalancing. Think about how
- * large the array of references needs to be, at its largest. An AVL tree with
- * height 30 must have at least 3,524,577 nodes, and if it has height 50, it
- * must have at least 53,316,291,172 nodes -- probably more than we care to put
- * in the tree. These results come from the minimum size of an AVL tree of
- * height h, which is described in your book as: S(h) = S(h - 1) + S(h - 2) + 1
- * (and base cases S(0) = 1, S(1) = 2).
- *
- * The printLevelOrder() method prints out all the nodes in the tree in
- * level-order (root, then the root's children, then their children, etc.). This
- * is like performing a breadth-first search of the tree. The method should put
- * up to 20 nodes on each line, and use multiple lines as necessary. This method
- * should use a Java queue, and it is iterative (not recursive). This method is
- * useful if we want to transmit the information for building exactly the same
- * tree to our correspondent. If we were to take all the non-NULL nodes and
- * insert them in the order printed by this method, we would get the exact same
- * tree. We would not always be able to construct the exact same tree if we were
- * to use printPreorder() instead.
- *
- * The rebalancePathToRoot() method takes an array of references to AVLNode
- * objects, and the number of references that are on the array. This array should
- * represent the path that needs rebalancing after an insert or remove. It's
- * probably best to have the root at the start of the array. This method should
- * walk from the bottom of the path to the root, checking for imbalances, and
- * correcting any it finds by calling rotation methods as necessary to correct
- * imbalances.
- */
-
  /**
    * AVLTree
    * 
@@ -237,16 +191,15 @@ class AVLTree {
 
   protected void rebalancePathToRoot(AVLNode[] path, int numOnPath) {
     //-
-    AVLNode rotated = null;
     numOnPath--;
     while (numOnPath > -1){
-      System.out.println(path[numOnPath].data);
+      AVLNode rotated = null;
       AVLNode cur = path[numOnPath];
       cur.updateHeight();
       int left = AVLNode.getHeight(cur.left);
       int right = AVLNode.getHeight(cur.right);
 
-      if (left + 1 < right){
+      if (right - left > 1){
         int rightLeft = AVLNode.getHeight(cur.right.left);
         int rightRight = AVLNode.getHeight(cur.right.right);
         if (rightLeft > rightRight){
@@ -254,7 +207,7 @@ class AVLTree {
         }else{
           rotated = cur.singleRotateLeft();
         }
-      }else if (right + 1 < left){
+      }else if (left - right > 1){
         int leftRight = AVLNode.getHeight(cur.left.right);
         int leftLeft = AVLNode.getHeight(cur.left.left);
         if (leftRight > leftLeft){
@@ -272,6 +225,7 @@ class AVLTree {
           path[numOnPath - 1].right = rotated;
         } 
       }
+      
       numOnPath--;
     }
   }
@@ -279,7 +233,6 @@ class AVLTree {
   
   public void insert(String item) {
     //- insert new node with data item
-
     if (root == null) root = new AVLNode(item, null, null, 0);
     else{
       AVLNode[] path = new AVLNode[32];
@@ -319,8 +272,9 @@ class AVLTree {
 
   public void remove(String item) {
     //-
+    // tree is empty nothing to remove 
     if (root == null) return;
-  
+    
     AVLNode[] path = new AVLNode[32];
     int numOnPath = 0;
     AVLNode parent = null;
@@ -342,7 +296,7 @@ class AVLTree {
         break;
       }
     }
-
+    // node not in tree 
     if (cur == null) return;
 
     // leaf node
@@ -356,6 +310,69 @@ class AVLTree {
       }
       cur = null;
     }
+    // one child
+    else if ((cur.left == null && cur.right != null) || 
+              (cur.left != null && cur.right == null )){
+              
+      AVLNode grandChild = null;
+      // make left grandchild parents left child
+      if (cur.left != null){
+        grandChild = cur.left;
+        cur.left = null;
+      }else{
+        grandChild = cur.right;
+        cur.right = null;
+      }
+
+      if (parent == null){
+        root = grandChild;
+      }
+      else if (parent.left == cur){
+        parent.left = grandChild;
+      }else{
+        parent.right = grandChild;
+      }
+      path[numOnPath++] = grandChild;
+      cur = null;
+    }
+    // removing a node with two children
+    else {
+      // need to keep track of min parent as well
+      AVLNode min = cur.right;
+      AVLNode minParent = cur;
+      
+      if (min.left != null){
+        while(min.left != null){
+          minParent = min;
+          min = min.left;
+        }
+        // relocate the min right node 
+        minParent.left = min.right;
+        min.right = cur.right;
+      }
+      // change pointers of the leftmost node
+      min.left = cur.left;
+
+      // if the node to remove is the root
+      if (parent == null){ 
+        root = min;
+        path[0] = min;
+      }else{
+        // change pointers of the parent node 
+        if (parent.left == cur) {
+          parent.left = min;
+        }
+        else{
+          parent.right = min;
+
+        }
+        path[numOnPath++] = min;
+      }
+      cur.left = null;
+      cur.right = null;
+      cur = null;
+    }
+    rebalancePathToRoot(path, numOnPath);
 
   }
 
@@ -373,20 +390,25 @@ class AVLTree {
     AVLNode front = q.peek();
 
     while (front != null){
+      numItems++;
       // left
       if (front.left != null){
         q.add(front.left);
+      }else if (!front.data.equals("NULL")){
+        q.add(new AVLNode("NULL", null, null, -1));
       }
       // right
       if (front.right != null){
         q.add(front.right);
+      }else if (!front.data.equals("NULL")){ 
+        q.add(new AVLNode("NULL", null, null, -1));
       }
       // new line
       if (numItems == 20){
         System.out.println(q.remove().getData());
         numItems = 0;  
       }else{
-        System.out.print(q.remove().getData() + "  ");
+        System.out.print(q.remove().getData() + " ");
       }
       front = q.peek();
     }
