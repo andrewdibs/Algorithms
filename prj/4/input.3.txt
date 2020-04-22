@@ -1,7 +1,10 @@
 i l
 i d
-i c
+i b
 i a
+i s
+i t
+i p
 p
-r c
+r s
 p

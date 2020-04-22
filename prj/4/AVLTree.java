@@ -89,7 +89,7 @@ class AVLNode {
     if (data == null) 
       return; 
     //print
-    System.out.println(indent + data + height);
+    System.out.println(indent + data);
     
     // left
     if (left == null){
@@ -116,7 +116,7 @@ class AVLNode {
       System.out.println(indent + "  NULL");
     }
     else{
-      System.out.println(indent + data + height);
+      System.out.println(indent + data);
     }
     
     // left
@@ -235,6 +235,7 @@ class AVLTree {
     //- insert new node with data item
     if (root == null) root = new AVLNode(item, null, null, 0);
     else{
+      //int length = S(root.height);
       AVLNode[] path = new AVLNode[32];
       int numOnPath = 0;
       AVLNode cur = root;
@@ -269,16 +270,26 @@ class AVLTree {
       }
     }
   }
+  
+  public int S(int h){
+    if (h == 0) return 1;
+    else if (h == 1) return 2;
+    
+    return S(h-1) + S(h - 2) + 1;
+    
+  }
 
   public void remove(String item) {
     //-
     // tree is empty nothing to remove 
     if (root == null) return;
     
+    //int length = S(root.height);
     AVLNode[] path = new AVLNode[32];
     int numOnPath = 0;
     AVLNode parent = null;
     AVLNode cur = root;
+    int index = 0;
 
     while (cur != null){
       path[numOnPath++] = cur;
@@ -293,6 +304,7 @@ class AVLTree {
         cur = cur.right;
       }
       else{
+        index = numOnPath-1;
         break;
       }
     }
@@ -343,11 +355,14 @@ class AVLTree {
       
       if (min.left != null){
         while(min.left != null){
+          path[numOnPath++] = min;
           minParent = min;
-          min = min.left;
+          min = min.left; 
         }
         // relocate the min right node 
         minParent.left = min.right;
+        // if (min.right != null)
+        //   path[numOnPath++] = min.right;
         min.right = cur.right;
       }
       // change pointers of the leftmost node
@@ -366,7 +381,7 @@ class AVLTree {
           parent.right = min;
 
         }
-        path[numOnPath++] = min;
+        path[index] = min;
       }
       cur.left = null;
       cur.right = null;
