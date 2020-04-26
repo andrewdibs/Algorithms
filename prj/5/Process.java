@@ -1,27 +1,6 @@
 import java.util.Scanner;
 
-/* A Process object represents a batch-executed computer process, which has a
- * hard real-time deadline before which it must finish. It also has an amount of
- * time that it requires to execute.
- *
- * A Process object has a (unique) id, which starts at 0 and should increment
- * whenever a new process is created. It is up to the operating system to assign
- * it an ID.
- *
- * Finally, a Process object has a data member "information", which is printed
- * when the run() method executes.
- *
- * The default constructor for the Process initializes all the data members to
- * reasonable defaults, and the id to the given ID (default is 0).
- *
- *
- * The canComplete method returns true if the method would be able to complete
- * if it starts now, or false if it could not finish by its deadline.
- *
- *
- * The streamIn() method is used to read in the deadline, requiredTime, and
- * information from a Scanner input stream.
- */
+
 class Process {
   private int id;
   private int deadline;
