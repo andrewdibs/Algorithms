@@ -1,5 +1,16 @@
 
-
+/**
+   * file: ArrayHeap.java
+   * author: Andrew DiBella
+   * course: CMPT 435
+   * assignment: project 5
+   * due date: April 27, 2020
+   * version: 3.0
+   * 
+   * This file contains the abstract data 
+   * type of an array heap to organize process 
+   * objects and retreiving them in constant time
+   */
 class ArrayHeap {
   private Process[] data;
   private int[] heapAndFreeStack;
@@ -28,20 +39,21 @@ class ArrayHeap {
     // - bubbles up newly inserted item if necessary
     if (ndx == 0) return;
 
-    int parent = ndx - 1 / 2; 
+    int parent = ( ndx - 1 )/ 2; 
     if (data[heapAndFreeStack[ndx]].isLess(data[heapAndFreeStack[parent]])){
 
       int tmp = heapAndFreeStack[ndx];
       heapAndFreeStack[ndx] = heapAndFreeStack[parent];
       heapAndFreeStack[parent] = tmp;
-
-      bubbleUp(parent);
     }
+    //recursion
+    bubbleUp(parent);
+    
   }
 
   private void bubbleDown(int ndx) {
     // - bubbles down data member at index with children
-    int child1 = 2 * (ndx + 1) - 1;
+    int child1 = (ndx * 2) + 1;
     int child2 = child1 + 1;
     // check if ndx has children to bubble down
     if (child1 < numItems){
@@ -57,9 +69,9 @@ class ArrayHeap {
         int tmp = heapAndFreeStack[ndx];
         heapAndFreeStack[ndx] = heapAndFreeStack[lesserChild];
         heapAndFreeStack[lesserChild] = tmp;
-        // recursion
-        bubbleDown(lesserChild);
       }
+      // recursion
+      bubbleDown(lesserChild);
     }
   }
 
@@ -67,7 +79,7 @@ class ArrayHeap {
   public ArrayHeap() {
     // - creates a new default ArrayHeap
     this.numItems = 0;
-    this.capacity = 2;
+    this.capacity = 5;
     this.data = new Process[capacity];
     this.heapAndFreeStack = new int[capacity];
     for (int i = 0; i < capacity; i++){
@@ -84,26 +96,25 @@ class ArrayHeap {
   }
 
   public void insert(Process item) {
-    // -
+    // - inserts item and doubles cap if necessa
     //  double capacity 
     if (numItems == capacity) doubleCapacity();
 
     // add to last open position
-    data[numItems] = item;
-    heapAndFreeStack[numItems] = numItems;
+    data[heapAndFreeStack[numItems]] = item;
     // bubble up
     bubbleUp(numItems++);
+    
   }
 
   public void removeMinItem() {
-    // -
+    // - removes min from heap and puts it in free stack 
     int tmp = heapAndFreeStack[numItems-1];
     heapAndFreeStack[numItems-1] = heapAndFreeStack[0];
     heapAndFreeStack[0] = tmp;
     
     numItems--;
     bubbleDown(0);
-
   }
 
   public Process getMinItem() {
@@ -115,5 +126,4 @@ class ArrayHeap {
     // - returns heaps number of items
     return this.numItems;
   }
-
 }

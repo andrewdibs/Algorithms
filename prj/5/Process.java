@@ -1,6 +1,15 @@
 import java.util.Scanner;
-
-
+/**
+   * file: Process.java
+   * author: Andrew DiBella
+   * course: CMPT 435
+   * assignment: project 5
+   * due date: April 27, 2020
+   * version: 3.0
+   * 
+   * This file contains the structure of 
+   * a real time batch operating system process
+   */
 class Process {
   private int id;
   private int deadline;
